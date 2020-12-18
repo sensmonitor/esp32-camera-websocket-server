@@ -204,6 +204,7 @@ static esp_err_t udp_stream_handler(AsyncWebSocket *ws){
     }
 
     while(true){
+      if (ws->count() > 0) {
         detected = false;
         face_id = 0;
         fb = esp_camera_fb_get();
@@ -292,8 +293,6 @@ static esp_err_t udp_stream_handler(AsyncWebSocket *ws){
             ws->binaryAll(_STREAM_BOUNDARY);
         }
 
-        // udp->endPacket();
-
         if(fb){
             esp_camera_fb_return(fb);
             fb = NULL;
@@ -324,6 +323,7 @@ static esp_err_t udp_stream_handler(AsyncWebSocket *ws){
             (uint32_t)ready_time, (uint32_t)face_time, (uint32_t)recognize_time, (uint32_t)encode_time, (uint32_t)process_time,
             (detected)?"DETECTED ":"", face_id
         );
+      }
     }
 
     last_frame = 0;
